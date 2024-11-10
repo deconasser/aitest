@@ -36,21 +36,21 @@ data = dict(
         ann_file=data_root + 'train.json',
         img_prefix=data_root + 'train_img/',
         pipeline=train_pipeline,
-        classes = ("motorbike", "DHelmet", "DNoHelmet", "P1Helmet", "P1NoHelmet", "P2Helmet", "P2NoHelmet", "P0Helmet", "P0NoHelmet")
+        classes = ("motorcycle", "car", "touring_car", "container")
         ),
     val=dict(
         type=dataset_type,
         ann_file=data_root + 'test.json',
         img_prefix=data_root + 'test_img/',
         pipeline=test_pipeline,
-        classes = ("motorbike", "DHelmet", "DNoHelmet", "P1Helmet", "P1NoHelmet", "P2Helmet", "P2NoHelmet", "P0Helmet", "P0NoHelmet")
+        classes = ("motorcycle", "car", "touring_car", "container")
         ),
     test=dict(
         type=dataset_type,
         ann_file=data_root + 'test.json',
         img_prefix=data_root + 'test_img/',
         pipeline=test_pipeline,
-        classes = ("motorbike", "DHelmet", "DNoHelmet", "P1Helmet", "P1NoHelmet", "P2Helmet", "P2NoHelmet", "P0Helmet", "P0NoHelmet")
+        classes = ("motorcycle", "car", "touring_car", "container")
         )
     )
 evaluation = dict(interval=1, metric='bbox')

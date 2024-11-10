@@ -165,8 +165,7 @@ data = dict(
             dict(type='DefaultFormatBundle'),
             dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
         ],
-        classes=('motorbike', 'DHelmet', 'DNoHelmet', 'P1Helmet', 'P1NoHelmet',
-                 'P2Helmet', 'P2NoHelmet', 'P0Helmet', 'P0NoHelmet'),
+        classes=('motorcycle', 'car', 'touring_car', 'container'),
         filter_empty_gt=False),
     val=dict(
         type='CocoDataset',
@@ -191,8 +190,7 @@ data = dict(
                     dict(type='Collect', keys=['img'])
                 ])
         ],
-        classes=('motorbike', 'DHelmet', 'DNoHelmet', 'P1Helmet', 'P1NoHelmet',
-                 'P2Helmet', 'P2NoHelmet', 'P0Helmet', 'P0NoHelmet')),
+        classes=('motorcycle', 'car', 'touring_car', 'container')),
     test=dict(
         type='CocoDataset',
         ann_file='/data/aicity2024_track5/test.json',
@@ -216,15 +214,14 @@ data = dict(
                     dict(type='Collect', keys=['img'])
                 ])
         ],
-        classes=('motorbike', 'DHelmet', 'DNoHelmet', 'P1Helmet', 'P1NoHelmet',
-                 'P2Helmet', 'P2NoHelmet', 'P0Helmet', 'P0NoHelmet')))
+        classes=('motorcycle', 'car', 'touring_car', 'container')))
 evaluation = dict(interval=1, metric='bbox')
 checkpoint_config = dict(interval=1)
 log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook')])
 custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-load_from = 'models/co_dino_5scale_swin_large_22e_o365.pth'
+load_from = 'models/co_dino_5scale_swin_large_16e_o365tococo.pth'
 resume_from = None
 workflow = [('train', 1)]
 opencv_num_threads = 0
@@ -274,7 +271,7 @@ model = dict(
     query_head=dict(
         type='CoDINOHead',
         num_query=900,
-        num_classes=9,
+        num_classes=4,
         num_feature_levels=5,
         in_channels=2048,
         sync_cls_avg_factor=True,
@@ -354,7 +351,7 @@ model = dict(
                 in_channels=256,
                 fc_out_channels=1024,
                 roi_feat_size=7,
-                num_classes=9,
+                num_classes=4,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0.0, 0.0, 0.0, 0.0],
@@ -370,7 +367,7 @@ model = dict(
     bbox_head=[
         dict(
             type='CoATSSHead',
-            num_classes=9,
+            num_classes=4,
             in_channels=256,
             stacked_convs=1,
             feat_channels=256,
@@ -475,9 +472,8 @@ optimizer_config = dict(grad_clip=dict(max_norm=0.1, norm_type=2))
 lr_config = dict(policy='step', step=[8])
 runner = dict(type='EpochBasedRunner', max_epochs=16)
 pretrained = None
-classes = ('motorbike', 'DHelmet', 'DNoHelmet', 'P1Helmet', 'P1NoHelmet',
-           'P2Helmet', 'P2NoHelmet', 'P0Helmet', 'P0NoHelmet')
-num_classes = 9
+classes = ('motorcycle', 'car', 'touring_car', 'container')
+num_classes = 4
 work_dir = 'helios'
 auto_resume = False
 gpu_ids = [0]
