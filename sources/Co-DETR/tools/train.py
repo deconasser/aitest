@@ -21,7 +21,7 @@ from mmdet.utils import (collect_env, get_device, get_root_logger,
                          replace_cfg_vals, setup_multi_processes,
                          update_data_root)
 from projects import *
-
+from mmpretrain.models.peft import LoRAModel
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a detector')
@@ -231,8 +231,26 @@ def main():
             CLASSES=datasets[0].CLASSES)
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
+
+    lora_config = {
+    'alpha': 1,
+    'rank': 4,
+    'drop_rate': 0.1,
+    'targets': [
+        {'type': '.*qkv'},  # Apply LoRA to layers matching this pattern
+        {'type': 'proj', 'alpha': 8, 'rank': 8}  # Specific settings for 'proj' layers
+    ]
+}
+    lora_model = LoRAModel(
+        module=model,
+        alpha=lora_config['alpha'],
+        rank=lora_config['rank'],
+        drop_rate=lora_config['drop_rate'],
+        targets=lora_config['targets']
+    )
+
     train_detector(
-        model,
+        lora_model,
         datasets,
         cfg,
         distributed=distributed,

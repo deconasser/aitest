@@ -22,9 +22,10 @@ RUN pip3 install yapf==0.40.1
 
 RUN pip3 install --no-cache-dir --upgrade pip wheel setuptools
 RUN mim install mmcv-full==1.5.0 -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.11.0/index.html
+RUN pip3 install mmpretrain
 RUN pip3 install scipy==1.10.1
 RUN apt-get install -y python3-magic
 RUN pip3 install python-magic
 
-# CMD bash train.sh && tail -f /dev/null
-CMD bash infer.sh && tail -f /dev/null
+CMD bash train.sh && tail -f /dev/null
+# CMD bash infer.sh && tail -f /dev/null
